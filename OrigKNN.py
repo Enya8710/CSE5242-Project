@@ -11,6 +11,7 @@ from sklearn.neighbors import KNeighborsClassifier
 def calculateDistance(test_point, train_point, p=2):
     # minkowski distance
     # p = 2 --> euclidean distance
+    
     dist = np.sum((test_point-train_point)**p)
     dist = dist**(1/p)
     return dist
@@ -23,7 +24,6 @@ def calculateDistance2(test_point,train_point):
 def origKNN(train_x, test_x, train_y, k, p=2):
     
     predList = []
-    
     for test_point in test_x:
         distList = []
         for train_point in train_x:
@@ -43,17 +43,15 @@ def origKNN(train_x, test_x, train_y, k, p=2):
 irisData = datasets.load_iris()
 data,target = irisData.data, irisData.target
 df = pd.DataFrame(data = data, columns = irisData.feature_names)
+# print(df)
 df['target'] = target
 x = df.drop('target', axis = 1)
 y = df['target']
 # print(df.target)
 
-train_x, test_x, train_y, test_y = train_test_split(x, y, test_size = 0.25)
+train_x, test_x, train_y, test_y = train_test_split(x.values, y, test_size = 0.25)
 
-scaler = StandardScaler()
-train_x = scaler.fit_transform(train_x)
-test_x = scaler.transform(test_x)
-
+ 
 start = time.time()
 
 predResult = origKNN(train_x, test_x, train_y, 3)
